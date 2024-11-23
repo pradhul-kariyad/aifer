@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, use_build_context_synchronously, unrelated_type_equality_checks
 import 'package:aifer/colors/colors.dart';
-import 'package:aifer/views/provider/connectivityProvider/connectivityProvider.dart';
-import 'package:aifer/views/provider/loadingProvider/loadingProvider.dart';
-import 'package:aifer/views/provider/photoProvider/photoProvider.dart';
+import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
+import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
+import 'package:aifer/views/provider/photo_provider/photo_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fl_downloader/fl_downloader.dart';
 import 'package:flutter/material.dart';

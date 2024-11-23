@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks, file_names
 import 'package:aifer/colors/colors.dart';
-import 'package:aifer/views/provider/connectivityProvider/connectivityProvider.dart';
-import 'package:aifer/views/provider/loadingProvider/loadingProvider.dart';
-import 'package:aifer/views/provider/photoProvider/photoProvider.dart';
-import 'package:aifer/views/widgets/followButton/followButton.dart';
-import 'package:aifer/views/widgets/activityRow/activityRow.dart';
-import 'package:aifer/views/widgets/circleImage/circleImage.dart';
-import 'package:aifer/views/widgets/myIcon/myIcon.dart';
-import 'package:aifer/views/widgets/newNavigationBar/newNavigationBar.dart';
+import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
+import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
+import 'package:aifer/views/provider/photo_provider/photo_provider.dart';
+import 'package:aifer/views/widgets/follow_button/follow_button.dart';
+import 'package:aifer/views/widgets/activity_row/activity_row.dart';
+import 'package:aifer/views/widgets/circle_image/circle_image.dart';
+import 'package:aifer/views/widgets/my_icon/my_icon.dart';
+import 'package:aifer/views/widgets/new_navigationbar/new_navigationbar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fl_downloader/fl_downloader.dart';
 import 'package:flutter/material.dart';

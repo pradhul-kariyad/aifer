@@ -1,8 +1,8 @@
 // ignore_for_file: unused_import
-import 'package:aifer/views/pages/home/homePage.dart';
-import 'package:aifer/views/provider/connectivityProvider/connectivityProvider.dart';
-import 'package:aifer/views/provider/loadingProvider/loadingProvider.dart';
-import 'package:aifer/views/provider/photoProvider/photoProvider.dart';
+import 'package:aifer/views/screens/home/home_page.dart';
+import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
+import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
+import 'package:aifer/views/provider/photo_provider/photo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
