@@ -99,6 +99,10 @@ class _HomePageState extends State<HomePage> {
                                     final thumbUrl = photoProvider.thumbUrl;
                                     final description =
                                         photoProvider.description;
+                                    // flutter_staggered_grid_view
+                                    // connectivity_plus
+                                    // fl_downloader
+                                    // permission_handler
                                     return MasonryGridView.count(
                                       crossAxisCount: 2,
                                       mainAxisSpacing: 10.w,
