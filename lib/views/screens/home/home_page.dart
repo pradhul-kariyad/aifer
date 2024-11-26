@@ -1,4 +1,6 @@
-// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks, file_names
+// ignore_for_file: avoid_print, use_build_context_synchronously, unrelated_type_equality_checks
+
+import 'dart:convert';
 import 'package:aifer/views/colors/colors.dart';
 import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
 import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
@@ -13,8 +15,8 @@ import 'package:fl_downloader/fl_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -96,23 +98,22 @@ class _HomePageState extends State<HomePage> {
                                 Consumer<PhotoProvider>(
                                   builder:
                                       (context, photoProvider, Widget? child) {
-                                    final thumbUrl = photoProvider.thumbUrl;
-                                    final description =
-                                        photoProvider.description;
-                                    // flutter_staggered_grid_view
-                                    // connectivity_plus
-                                    // fl_downloader
-                                    // permission_handler
+                                    final images = photoProvider.images;
                                     return MasonryGridView.count(
                                       crossAxisCount: 2,
                                       mainAxisSpacing: 10.w,
                                       crossAxisSpacing: 10.w,
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount: 8,
+                                      itemCount: images.length,
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 10.w),
                                       itemBuilder: (context, index) {
+                                        final image = images[index];
+                                        final thumbUrl = image['urls']['thumb'];
+                                        final description =
+                                            image['description'] ??
+                                                'No description';
                                         double containerHeight =
                                             (index % 2 == 0) ? 250.h : 190.h;
                                         return Column(
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                             GestureDetector(
                                               onTap: () async {
                                                 final imageUrl =
-                                                    photoProvider.fullUrl ?? '';
+                                                    image['urls']['full'] ?? '';
                                                 final fileName =
                                                     'Aifer_Education$index.jpg';
                                                 await downloadImage(
@@ -162,7 +163,6 @@ class _HomePageState extends State<HomePage> {
                                                                       20.sp),
                                                           color: gwhite),
                                                       child: Text(
-                                                        //  textAlign: TextAlign.center,
                                                         '\$60',
                                                         style: TextStyle(
                                                           fontFamily: 'Poppins',
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             SizedBox(height: 8.h),
                                             Text(
-                                              description ?? 'Name',
+                                              description,
                                               style: TextStyle(
                                                 fontFamily: 'Poppins',
                                                 color: black,
@@ -224,19 +224,12 @@ class _HomePageState extends State<HomePage> {
       connectivityProvider.isConnected = false;
     } else {
       connectivityProvider.isConnected = true;
-      final json = {
-        "id": "Dwu85P9SOIk",
-        "description": "A man drinking a coffee.",
-        "urls": {
-          "thumb":
-              "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?q=75&fm=jpg&w=200&fit=max",
-          "full":
-              "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?q=100&fm=jpg&w=1080&fit=max"
-        },
-      };
 
-      if (connectivityProvider.isConnected) {
-        Provider.of<PhotoProvider>(context, listen: false).loadPhoto(json);
+      final jsonResponse = await fetchUnsplashImages();
+
+      if (jsonResponse != null && connectivityProvider.isConnected) {
+        Provider.of<PhotoProvider>(context, listen: false)
+            .loadPhotos(jsonResponse);
       }
     }
 
@@ -244,10 +237,21 @@ class _HomePageState extends State<HomePage> {
         .addPostFrameCallback((_) => loadingProvider.isLoading = false);
   }
 
-  Future<void> requestPermission() async {
-    final status = await Permission.storage.request();
-    if (status.isDenied || status.isPermanentlyDenied) {
-      openAppSettings();
+  Future<List<dynamic>?> fetchUnsplashImages() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://api.unsplash.com/photos/?client_id=qDi5RnVgODf3Jsfhw1cJ7ignoWQhjFKni4ZlfEHjdCo'),
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        print('Failed to load images');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching images: $e');
+      return null;
     }
   }
 
