@@ -1,4 +1,5 @@
 // ignore_for_file: unused_import
+import 'package:aifer/views/provider/fetch_image_provider/fetch_image_provider.dart';
 import 'package:aifer/views/screens/home/home_page.dart';
 import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
 import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         }),
         ChangeNotifierProvider(create: (context) {
           return LoadingProvider();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return FetchImageProvider();
         }),
       ],
       child: ScreenUtilInit(

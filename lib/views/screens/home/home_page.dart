@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, unrelated_type_equality_checks
+// ignore_for_file: avoid_print, use_build_context_synchronously, unrelated_type_equality_checks, non_constant_identifier_names, unused_local_variable
 
-import 'dart:convert';
-import 'dart:developer';
 import 'package:aifer/views/colors/colors.dart';
 import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
+import 'package:aifer/views/provider/fetch_image_provider/fetch_image_provider.dart';
 import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
 import 'package:aifer/views/provider/photo_provider/photo_provider.dart';
 import 'package:aifer/views/widgets/follow_button/follow_button.dart';
@@ -17,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -226,7 +224,9 @@ class _HomePageState extends State<HomePage> {
     } else {
       connectivityProvider.isConnected = true;
 
-      final jsonResponse = await fetchUnsplashImages();
+      final jsonResponse =
+          await Provider.of<FetchImageProvider>(context, listen: false)
+              .fetchUnsplashImages();
 
       if (jsonResponse != null && connectivityProvider.isConnected) {
         Provider.of<PhotoProvider>(context, listen: false)
@@ -236,25 +236,6 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => loadingProvider.isLoading = false);
-  }
-
-  Future<List<dynamic>?> fetchUnsplashImages() async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'https://api.unsplash.com/photos/?client_id=qDi5RnVgODf3Jsfhw1cJ7ignoWQhjFKni4ZlfEHjdCo'),
-      );
-      if (response.statusCode == 200) {
-        log('body : ${response.body}');
-        return json.decode(response.body);
-      } else {
-        print('Failed to load images');
-        return null;
-      }
-    } catch (e) {
-      print('Error fetching images: $e');
-      return null;
-    }
   }
 
   Future<void> downloadImage(String imageUrl, String fileName) async {
