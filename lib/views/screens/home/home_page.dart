@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, unrelated_type_equality_checks
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:aifer/views/colors/colors.dart';
 import 'package:aifer/views/provider/connectivity_provider/connectivity_provider.dart';
 import 'package:aifer/views/provider/loading_provider/loading_provider.dart';
@@ -244,6 +245,7 @@ class _HomePageState extends State<HomePage> {
             'https://api.unsplash.com/photos/?client_id=qDi5RnVgODf3Jsfhw1cJ7ignoWQhjFKni4ZlfEHjdCo'),
       );
       if (response.statusCode == 200) {
+        log('body : ${response.body}');
         return json.decode(response.body);
       } else {
         print('Failed to load images');
